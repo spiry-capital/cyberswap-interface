@@ -30,28 +30,28 @@ const ETH_ONLY: ChainTokenList = {
   [ChainId.RINKEBY]: [ETHER],
   [ChainId.GÖRLI]: [ETHER],
   [ChainId.KOVAN]: [ETHER],
-  [61]: [ETHER]
+  61: [ETHER]
 }
 
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...ETH_ONLY,
   [ChainId.MAINNET]: [DAI, USDC, USDT, COMP, MKR, CHI],
-  [61]: [DOGECT]
+  61: [DOGECT]
 }
 
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES: ChainTokenList = {
   ...ETH_ONLY,
   [ChainId.MAINNET]: [DAI, USDC, USDT, CHI],
-  [61]: [DOGECT]
+  61: [DOGECT]
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   ...ETH_ONLY,
   [ChainId.MAINNET]: [ETHER, DAI, USDC, USDT, CHI],
-  [61]: [DOGECT]
+  61: [DOGECT]
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {

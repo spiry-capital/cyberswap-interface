@@ -20,7 +20,7 @@ const ONE_SPLIT_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.RINKEBY]: '',
   [ChainId.GÖRLI]: '',
   [ChainId.KOVAN]: '',
-  [61]: '0x363945b6aFd60ddf9E431a605100eDc8fb1edA2e'
+  61: '0x363945b6aFd60ddf9E431a605100eDc8fb1edA2e'
 }
 
 const ONE_SPLIT_ABI_INTERFACE = new Interface(ONE_SPLIT_ABI)
