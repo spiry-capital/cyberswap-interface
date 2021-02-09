@@ -1,6 +1,6 @@
 import { TransactionResponse } from '@ethersproject/abstract-provider'
 import { AddressZero } from '@ethersproject/constants'
-import { Token, TokenAmount, Fraction, JSBI, Percent, ETHER } from '@uniswap/sdk'
+import { Token, TokenAmount, Fraction, JSBI, Percent } from '@uniswap/sdk'
 import React, { useCallback, useMemo, useState } from 'react'
 import ReactGA from 'react-ga'
 import { Redirect, RouteComponentProps } from 'react-router'
@@ -22,17 +22,14 @@ import { useMooniswapMigratorContract } from '../../hooks/useContract'
 import { useIsTransactionPending, useTransactionAdder } from '../../state/transactions/hooks'
 import { useTokenBalance, useTokenBalances } from '../../state/wallet/hooks'
 import { BackArrow, TYPE } from '../../theme'
-import {
-  calculateSlippageAmount,
-  getMooniswapMigratorContract,
-  isAddress
-} from '../../utils'
+import { calculateSlippageAmount, getMooniswapMigratorContract, isAddress } from '../../utils'
 import { BodyWrapper } from '../AppBody'
 import { EmptyState } from './EmptyState'
 import { usePairTokens } from '../../data-mooniswap/UniswapV2'
 import DoubleCurrencyLogo from '../../components/DoubleLogo'
 import { Link } from 'react-router-dom'
 import { useUserSlippageTolerance } from '../../state/user/hooks'
+import { ETC as ETHER } from '../../constants'
 
 const POOL_CURRENCY_AMOUNT_MIN = new Fraction(JSBI.BigInt(1), JSBI.BigInt(1000000))
 const ZERO = JSBI.BigInt(0)
@@ -77,8 +74,7 @@ export function V1LiquidityInfo({
         <DoubleCurrencyLogo currency0={token0} currency1={token1} />
         <div style={{ marginLeft: '.75rem' }}>
           <TYPE.mediumHeader>
-            {<FormattedPoolCurrencyAmount currencyAmount={liquidityTokenAmount} />}{' '}
-            {token0.symbol}/{ token1.symbol }
+            {<FormattedPoolCurrencyAmount currencyAmount={liquidityTokenAmount} />} {token0.symbol}/{token1.symbol}
           </TYPE.mediumHeader>
         </div>
       </AutoRow>
@@ -109,7 +105,15 @@ export function V1LiquidityInfo({
   )
 }
 
-function V1PairMigration({ liquidityTokenAmount, token0, token1 }: { liquidityTokenAmount: TokenAmount; token0: Token, token1: Token }) {
+function V1PairMigration({
+  liquidityTokenAmount,
+  token0,
+  token1
+}: {
+  liquidityTokenAmount: TokenAmount
+  token0: Token
+  token1: Token
+}) {
   const { account, chainId, library } = useActiveWeb3React()
   const totalSupply = useTotalSupply(liquidityTokenAmount.token)
   const pairTokenBalances = useTokenBalances(liquidityTokenAmount.token.address, [token0, token1])
@@ -126,7 +130,9 @@ function V1PairMigration({ liquidityTokenAmount, token0, token1 }: { liquidityTo
   const [mooniswapPairState, mooniswapPair] = usePair(mooniswapTokens[0], mooniswapTokens[1])
   const isFirstLiquidityProvider: boolean = mooniswapPairState === PairState.NOT_EXISTS
 
-  const mooniswapSpotPrice = mooniswapPair?.reserveOf(mooniswapTokens[1])?.divide(mooniswapPair?.reserveOf(mooniswapTokens[0]))
+  const mooniswapSpotPrice = mooniswapPair
+    ?.reserveOf(mooniswapTokens[1])
+    ?.divide(mooniswapPair?.reserveOf(mooniswapTokens[0]))
 
   const [confirmingMigration, setConfirmingMigration] = useState<boolean>(false)
   const [pendingMigrationHash, setPendingMigrationHash] = useState<string | null>(null)
@@ -169,7 +175,6 @@ function V1PairMigration({ liquidityTokenAmount, token0, token1 }: { liquidityTo
   const migrator = useMooniswapMigratorContract()
 
   const migrate = useCallback(async () => {
-
     // if (!mooniswapPair || !minAmountToken || !minAmountETH) return
     if (!mooniswapPair || !allowedSlippage) return
 
@@ -198,7 +203,6 @@ function V1PairMigration({ liquidityTokenAmount, token0, token1 }: { liquidityTo
         '0x0'
       )
       .then((response: TransactionResponse) => {
-
         ReactGA.event({
           category: 'Migrate',
           action: 'V2->Mooniswap',
@@ -210,11 +214,22 @@ function V1PairMigration({ liquidityTokenAmount, token0, token1 }: { liquidityTo
         })
         setPendingMigrationHash(response.hash)
       })
-      .catch((e) => {
+      .catch(e => {
         console.log(e)
         setConfirmingMigration(false)
       })
-  }, [allowedSlippage, chainId, library, liquidityTokenAmount, mooniswapPair, migrator, token0, token1, account, addTransaction])
+  }, [
+    allowedSlippage,
+    chainId,
+    library,
+    liquidityTokenAmount,
+    mooniswapPair,
+    migrator,
+    token0,
+    token1,
+    account,
+    addTransaction
+  ])
 
   const noLiquidityTokens = !!liquidityTokenAmount && liquidityTokenAmount.equalTo(ZERO)
 
@@ -247,20 +262,26 @@ function V1PairMigration({ liquidityTokenAmount, token0, token1 }: { liquidityTo
             <RowBetween>
               <TYPE.body>Mooniswap Price:</TYPE.body>
               <TYPE.black>
-                {mooniswapSpotPrice?.toSignificant(6)}  {token0.symbol.replace('WETH', 'ETH')}/{token1.symbol.replace('WETH', 'ETH')}
+                {mooniswapSpotPrice?.toSignificant(6)} {token0.symbol.replace('WETH', 'ETH')}/
+                {token1.symbol.replace('WETH', 'ETH')}
               </TYPE.black>
             </RowBetween>
             <RowBetween>
               <div />
               <TYPE.black>
-                {mooniswapSpotPrice?.invert()?.toSignificant(6)} {token1.symbol.replace('WETH', 'ETH')}/{token0.symbol.replace('WETH', 'ETH')}
+                {mooniswapSpotPrice?.invert()?.toSignificant(6)} {token1.symbol.replace('WETH', 'ETH')}/
+                {token0.symbol.replace('WETH', 'ETH')}
               </TYPE.black>
             </RowBetween>
 
             <RowBetween>
-              <TYPE.body color="inherit">Price Difference: <QuestionHelper text={`It's best to deposit liquidity into Mooniswap at a price you believe is correct. If the Mooniswap price seems
-                incorrect, you can either make a swap to move the price or wait for someone else to do so.`
-              }/></TYPE.body>
+              <TYPE.body color="inherit">
+                Price Difference:{' '}
+                <QuestionHelper
+                  text={`It's best to deposit liquidity into Mooniswap at a price you believe is correct. If the Mooniswap price seems
+                incorrect, you can either make a swap to move the price or wait for someone else to do so.`}
+                />
+              </TYPE.body>
               <TYPE.black color="inherit">{priceDifferenceAbs.toSignificant(4)}%</TYPE.black>
             </RowBetween>
           </AutoColumn>
@@ -270,7 +291,8 @@ function V1PairMigration({ liquidityTokenAmount, token0, token1 }: { liquidityTo
       {isFirstLiquidityProvider && (
         <PinkCard>
           <TYPE.body style={{ marginBottom: 8, fontWeight: 400 }}>
-            Mooniswap POOL for {mooniswapTokens[0].symbol}/{mooniswapTokens[1].symbol} hasn't created yet. First you need to create a pool
+            Mooniswap POOL for {mooniswapTokens[0].symbol}/{mooniswapTokens[1].symbol} hasn't created yet. First you
+            need to create a pool
           </TYPE.body>
 
           <AutoColumn gap="8px">
@@ -299,47 +321,50 @@ function V1PairMigration({ liquidityTokenAmount, token0, token1 }: { liquidityTo
           token1Worth={token1Worth}
         />
 
-        {isFirstLiquidityProvider && (<div style={{ display: 'flex', marginTop: '1rem' }}>
-          <AutoColumn gap="12px" style={{ flex: '1', marginRight: 12 }}>
-          <ButtonPrimary
-              as={Link}
-              to={'/add/' + mooniswapTokens[0].address + '/' + mooniswapTokens[1].address}
-            >Create Pool</ButtonPrimary>
-          </AutoColumn>
-        </div>)}
+        {isFirstLiquidityProvider && (
+          <div style={{ display: 'flex', marginTop: '1rem' }}>
+            <AutoColumn gap="12px" style={{ flex: '1', marginRight: 12 }}>
+              <ButtonPrimary as={Link} to={'/add/' + mooniswapTokens[0].address + '/' + mooniswapTokens[1].address}>
+                Create Pool
+              </ButtonPrimary>
+            </AutoColumn>
+          </div>
+        )}
 
-        {!isFirstLiquidityProvider && (<div style={{ display: 'flex', marginTop: '1rem' }}>
-          <AutoColumn gap="12px" style={{ flex: '1', marginRight: 12 }}>
-            <ButtonConfirmed
-              confirmed={approval === ApprovalState.APPROVED}
-              disabled={approval !== ApprovalState.NOT_APPROVED}
-              onClick={approve}
-            >
-              {approval === ApprovalState.PENDING ? (
-                <Dots>Approving</Dots>
-              ) : approval === ApprovalState.APPROVED ? (
-                'Approved'
-              ) : (
-                'Approve'
-              )}
-            </ButtonConfirmed>
-          </AutoColumn>
-          <AutoColumn gap="12px" style={{ flex: '1' }}>
-            <ButtonConfirmed
-              confirmed={isSuccessfullyMigrated}
-              disabled={
-                isSuccessfullyMigrated ||
-                noLiquidityTokens ||
-                isMigrationPending ||
-                approval !== ApprovalState.APPROVED ||
-                confirmingMigration
-              }
-              onClick={migrate}
-            >
-              {isSuccessfullyMigrated ? 'Success' : isMigrationPending ? <Dots>Migrating</Dots> : 'Migrate'}
-            </ButtonConfirmed>
-          </AutoColumn>
-        </div>)}
+        {!isFirstLiquidityProvider && (
+          <div style={{ display: 'flex', marginTop: '1rem' }}>
+            <AutoColumn gap="12px" style={{ flex: '1', marginRight: 12 }}>
+              <ButtonConfirmed
+                confirmed={approval === ApprovalState.APPROVED}
+                disabled={approval !== ApprovalState.NOT_APPROVED}
+                onClick={approve}
+              >
+                {approval === ApprovalState.PENDING ? (
+                  <Dots>Approving</Dots>
+                ) : approval === ApprovalState.APPROVED ? (
+                  'Approved'
+                ) : (
+                  'Approve'
+                )}
+              </ButtonConfirmed>
+            </AutoColumn>
+            <AutoColumn gap="12px" style={{ flex: '1' }}>
+              <ButtonConfirmed
+                confirmed={isSuccessfullyMigrated}
+                disabled={
+                  isSuccessfullyMigrated ||
+                  noLiquidityTokens ||
+                  isMigrationPending ||
+                  approval !== ApprovalState.APPROVED ||
+                  confirmingMigration
+                }
+                onClick={migrate}
+              >
+                {isSuccessfullyMigrated ? 'Success' : isMigrationPending ? <Dots>Migrating</Dots> : 'Migrate'}
+              </ButtonConfirmed>
+            </AutoColumn>
+          </div>
+        )}
       </LightCard>
       <TYPE.darkGray style={{ textAlign: 'center' }}>
         {`Your Uniswap V2 ${token0.symbol}/${token1.symbol} liquidity will become Mooniswap ${mooniswapTokens[0].symbol}/${mooniswapTokens[1].symbol} liquidity.`}

@@ -2,7 +2,6 @@ import { AddressZero } from '@ethersproject/constants'
 import {
   BigintIsh,
   currencyEquals,
-  ETHER,
   JSBI,
   Pair,
   Percent,
@@ -20,6 +19,8 @@ import { Version } from '../hooks/useToggledVersion'
 import { NEVER_RELOAD, useSingleCallResult, useSingleContractMultipleData } from '../state/multicall/hooks'
 import { useTokenBalances } from '../state/wallet/hooks'
 
+import { ETC as ETHER } from '../constants'
+
 export function useV1ExchangeAddress(tokenAddress?: string): string | undefined {
   const contract = useV1FactoryContract()
 
@@ -34,11 +35,7 @@ export class MockV1Pair extends Pair {
 }
 
 function useMockV1Pair(inputCurrency?: Token): MockV1Pair | undefined {
-  return useMemo(
-    () =>
-      undefined,
-    []
-  )
+  return useMemo(() => undefined, [])
 }
 
 // returns all v1 exchange addresses in the user's token list
@@ -142,8 +139,8 @@ export function useV1TradeExchangeAddress(trade: Trade | undefined): string | un
     return trade.inputAmount instanceof TokenAmount
       ? trade.inputAmount.token.address
       : trade.outputAmount instanceof TokenAmount
-        ? trade.outputAmount.token.address
-        : undefined
+      ? trade.outputAmount.token.address
+      : undefined
   }, [trade])
   return useV1ExchangeAddress(tokenAddress)
 }

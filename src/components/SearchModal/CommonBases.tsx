@@ -1,9 +1,9 @@
 import React from 'react'
 import { Text } from 'rebass'
-import { ChainId, Token, currencyEquals, ETHER } from '@uniswap/sdk'
+import { ChainId, Token, currencyEquals } from '@uniswap/sdk'
 import styled from 'styled-components'
 
-import { SUGGESTED_BASES } from '../../constants'
+import { SUGGESTED_BASES, ETC as ETHER } from '../../constants'
 import { AutoColumn } from '../Column'
 import QuestionHelper from '../QuestionHelper'
 import { AutoRow } from '../Row'

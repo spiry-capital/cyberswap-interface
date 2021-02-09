@@ -1,4 +1,4 @@
-import { Token, TokenAmount, ETHER, JSBI, Pair, Percent, Price } from '@uniswap/sdk'
+import { Token, TokenAmount, JSBI, Pair, Percent, Price } from '@uniswap/sdk'
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { PairState, usePair } from '../../data/Reserves'
@@ -10,6 +10,8 @@ import { AppDispatch, AppState } from '../index'
 import { tryParseAmount } from '../swap/hooks'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, typeInput } from './actions'
+
+import { ETC as ETHER } from '../../constants'
 
 const ZERO = JSBI.BigInt(0)
 

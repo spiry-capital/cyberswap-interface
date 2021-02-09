@@ -1,4 +1,4 @@
-import { Token, TokenAmount, currencyEquals, ETHER, JSBI } from '@uniswap/sdk'
+import { Token, TokenAmount, currencyEquals, JSBI } from '@uniswap/sdk'
 import React, { CSSProperties, memo, useContext, useMemo } from 'react'
 import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
@@ -16,6 +16,8 @@ import CurrencyLogo from '../CurrencyLogo'
 import { FadedSpan, MenuItem } from './styleds'
 import Loader from '../Loader'
 import { isDefaultToken } from '../../utils'
+
+import { ETC as ETHER } from '../../constants'
 
 function currencyKey(currency: Token): string {
   return currency instanceof Token ? currency.address : currency === ETHER ? 'ETHER' : ''

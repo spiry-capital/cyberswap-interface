@@ -1,14 +1,15 @@
-import { Token, ETHER } from '@uniswap/sdk'
+import { Token } from '@uniswap/sdk'
 import React, { useState } from 'react'
 import styled from 'styled-components'
+
+import { ETC as ETHER } from '../../constants'
 
 import EthereumLogo from '../../assets/images/ethereum-logo.png'
 
 const getTokenLogoURL = address =>
   `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`
 
-const getTokenLogoURL1inch = address =>
-  `https://tokens.1inch.exchange/${address.toLowerCase()}.png`
+const getTokenLogoURL1inch = address => `https://tokens.1inch.exchange/${address.toLowerCase()}.png`
 
 const BAD_URIS: { [tokenAddress: string]: true } = {}
 const FALLBACK_URIS: { [tokenAddress: string]: string } = {}

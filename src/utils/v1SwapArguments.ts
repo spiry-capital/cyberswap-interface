@@ -1,7 +1,9 @@
 import { MaxUint256 } from '@ethersproject/constants'
-import { TokenAmount, ETHER, Token, Trade, TradeType } from '@uniswap/sdk'
+import { TokenAmount, Token, Trade, TradeType } from '@uniswap/sdk'
 import { getTradeVersion } from '../data/V1'
 import { Version } from '../hooks/useToggledVersion'
+
+import { ETC as ETHER } from '../constants'
 
 function toHex(currencyAmount: TokenAmount): string {
   return `0x${currencyAmount.raw.toString(16)}`

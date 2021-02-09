@@ -1,4 +1,4 @@
-import { Token, ETHER, JSBI, TokenAmount } from '@uniswap/sdk'
+import { Token, JSBI, TokenAmount } from '@uniswap/sdk'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Plus } from 'react-feather'
 import { Text } from 'rebass'
@@ -18,6 +18,7 @@ import { StyledInternalLink } from '../../theme'
 import { currencyId } from '../../utils/currencyId'
 import AppBody from '../AppBody'
 import { Dots } from '../Pool/styleds'
+import { ETC as ETHER } from '../../constants'
 
 enum Fields {
   TOKEN0 = 0,

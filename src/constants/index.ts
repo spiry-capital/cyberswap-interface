@@ -1,13 +1,10 @@
-import { ChainId, ETHER, JSBI, Percent, Token } from '@uniswap/sdk'
+import { ChainId, JSBI, Percent, Token } from '@uniswap/sdk'
 
 import { fortmatic, injected, portis, walletconnect, walletlink } from '../connectors'
 
 export const ROUTER_ADDRESS = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D'
 
-// a list of tokens by chain
-type ChainTokenList = {
-  readonly [chainId in ChainId]: Token[]
-}
+export const ETC = new Token(61, '0x0000000000000000000000000000000000000000', 18, 'ETC', 'Ethereum Classic')
 
 export const DAI = new Token(ChainId.MAINNET, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'Dai Stablecoin')
 export const USDC = new Token(ChainId.MAINNET, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD//C')
@@ -22,40 +19,35 @@ export const CHI = new Token(
   'Chi Gastoken by 1inch'
 )
 
-export const DOGECT = new Token(61, '0xff8596169865c7cc1458b1c0eccafd4092c7f10f', 8, 'DOGECT', 'Doge Classic Token')
-
 interface INetworks {
   [key: number]: any
 }
 
 const ETH_ONLY: INetworks = {
-  [ChainId.MAINNET]: [ETHER],
-  [ChainId.ROPSTEN]: [ETHER],
-  [ChainId.RINKEBY]: [ETHER],
-  [ChainId.GÖRLI]: [ETHER],
-  [ChainId.KOVAN]: [ETHER],
-  61: [ETHER]
+  [ChainId.MAINNET]: [ETC],
+  [ChainId.ROPSTEN]: [ETC],
+  [ChainId.RINKEBY]: [ETC],
+  [ChainId.GÖRLI]: [ETC],
+  [ChainId.KOVAN]: [ETC],
+  61: [ETC]
 }
 
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: INetworks = {
   ...ETH_ONLY,
-  [ChainId.MAINNET]: [DAI, USDC, USDT, COMP, MKR, CHI],
-  61: [DOGECT]
+  [ChainId.MAINNET]: [DAI, USDC, USDT, COMP, MKR, CHI]
 }
 
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES: INetworks = {
   ...ETH_ONLY,
-  [ChainId.MAINNET]: [DAI, USDC, USDT, CHI],
-  61: [DOGECT]
+  [ChainId.MAINNET]: [DAI, USDC, USDT, CHI]
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
 export const BASES_TO_TRACK_LIQUIDITY_FOR: INetworks = {
   ...ETH_ONLY,
-  [ChainId.MAINNET]: [ETHER, DAI, USDC, USDT, CHI],
-  61: [DOGECT]
+  [ChainId.MAINNET]: [ETC, DAI, USDC, USDT, CHI]
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
@@ -66,9 +58,9 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
     ],
     [USDC, USDT],
     [DAI, USDT],
-    [ETHER, CHI],
+    [ETC, CHI],
     [USDC, CHI],
-    [ETHER, USDC]
+    [ETC, USDC]
   ]
 }
 

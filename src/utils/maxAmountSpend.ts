@@ -1,5 +1,5 @@
-import { TokenAmount, ETHER, JSBI } from '@uniswap/sdk'
-import { MIN_ETH } from '../constants'
+import { TokenAmount, JSBI } from '@uniswap/sdk'
+import { MIN_ETH, ETC as ETHER } from '../constants'
 
 /**
  * Given some token amount, return the max that can be spent of it

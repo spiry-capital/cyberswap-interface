@@ -1,4 +1,6 @@
-import { ChainId, Token, TokenAmount, ETHER } from '@uniswap/sdk'
+import { ChainId, Token, TokenAmount } from '@uniswap/sdk'
+
+import { ETC as ETHER } from '../constants'
 
 export function wrappedCurrency(currency: Token | undefined, chainId: ChainId | undefined): Token | undefined {
   return chainId && currency instanceof Token ? currency : undefined
@@ -20,7 +22,7 @@ export function unwrappedToken(token: Token): Token {
 ////////// MOONISWAP ////////
 export function normalizeToken(currency: Token | undefined): Token | undefined {
   if (currency?.symbol === 'ETH') {
-    return new Token(1, '0x0000000000000000000000000000000000000000', 18, 'ETH', 'Ethereum')
+    return new Token(1, '0x0000000000000000000000000000000000000000', 18, 'ETC', 'Ethereum Classic')
   }
   return currency instanceof Token ? currency : undefined
 }

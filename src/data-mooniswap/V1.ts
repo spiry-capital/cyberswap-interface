@@ -4,13 +4,12 @@ import {
   Token,
   TokenAmount,
   currencyEquals,
-  ETHER,
   JSBI,
   Pair,
   Percent,
   Route,
   Trade,
-  TradeType,
+  TradeType
 } from '@uniswap/sdk'
 import { useMemo } from 'react'
 import { useActiveWeb3React } from '../hooks'
@@ -22,12 +21,13 @@ import { useTokenBalances } from '../state/wallet/hooks'
 import {
   ETH_ADDRESS,
   FLAG_DISABLE_ALL_SPLIT_SOURCES,
-  FLAG_DISABLE_ALL_WRAP_SOURCES, FLAG_DISABLE_MOONISWAP_ALL,
+  FLAG_DISABLE_ALL_WRAP_SOURCES,
+  FLAG_DISABLE_MOONISWAP_ALL,
   ZERO_ADDRESS
 } from '../constants/one-split'
 import { usePair } from './Reserves'
 import { BigNumber } from '@ethersproject/bignumber'
-import { DAI, USDC } from '../constants'
+import { DAI, USDC, ETC as ETHER } from '../constants'
 
 export function useV1ExchangeAddress(tokenAddress?: string): string | undefined {
   const contract = useV1FactoryContract()
@@ -43,11 +43,7 @@ export class MockV1Pair extends Pair {
 }
 
 function useMockV1Pair(inputCurrency?: Token): MockV1Pair | undefined {
-  return useMemo(
-    () =>
-      undefined,
-    []
-  )
+  return useMemo(() => undefined, [])
 }
 
 // returns all v1 exchange addresses in the user's token list
@@ -183,7 +179,6 @@ export function isTradeBetter(
   }
 }
 
-
 export function useMooniswapTrade(
   inputCurrency?: Token,
   outputCurrency?: Token,
@@ -191,16 +186,28 @@ export function useMooniswapTrade(
 ): [Trade, BigNumber[]] | [undefined, undefined] | undefined {
   let mooniswapTrade: Trade | undefined
 
-  const amount = inputCurrency?.decimals && inputCurrency?.decimals !== 0
-    ? parseAmount?.multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(inputCurrency?.decimals))).toFixed(0)
-    : parseAmount?.toFixed(0)
+  const amount =
+    inputCurrency?.decimals && inputCurrency?.decimals !== 0
+      ? parseAmount?.multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(inputCurrency?.decimals))).toFixed(0)
+      : parseAmount?.toFixed(0)
 
   const params = [
-    inputCurrency?.address ? inputCurrency.address !== ZERO_ADDRESS ? inputCurrency.address : ETH_ADDRESS : ETH_ADDRESS,
-    outputCurrency?.address ? outputCurrency.address !== ZERO_ADDRESS ? outputCurrency.address : ETH_ADDRESS : ETH_ADDRESS,
+    inputCurrency?.address
+      ? inputCurrency.address !== ZERO_ADDRESS
+        ? inputCurrency.address
+        : ETH_ADDRESS
+      : ETH_ADDRESS,
+    outputCurrency?.address
+      ? outputCurrency.address !== ZERO_ADDRESS
+        ? outputCurrency.address
+        : ETH_ADDRESS
+      : ETH_ADDRESS,
     amount,
     1,
-    JSBI.add(FLAG_DISABLE_ALL_WRAP_SOURCES, JSBI.add(FLAG_DISABLE_ALL_SPLIT_SOURCES, FLAG_DISABLE_MOONISWAP_ALL)).toString()
+    JSBI.add(
+      FLAG_DISABLE_ALL_WRAP_SOURCES,
+      JSBI.add(FLAG_DISABLE_ALL_SPLIT_SOURCES, FLAG_DISABLE_MOONISWAP_ALL)
+    ).toString()
   ]
 
   const poolPair = usePair(inputCurrency, outputCurrency)
@@ -214,7 +221,7 @@ export function useMooniswapTrade(
   const poolPairEthToDest = usePair(ETHER, outputCurrency)
 
   const results = useSingleCallResult(useOneSplit(), 'getExpectedReturn', params)
-  if(!inputCurrency || !outputCurrency || !parseAmount || !results.result) {
+  if (!inputCurrency || !outputCurrency || !parseAmount || !results.result) {
     return
   }
 
@@ -245,10 +252,7 @@ export function useMooniswapTrade(
 
   const route = inputCurrency && pairs && pairs.length > 0 && new Route(pairs, inputCurrency, outputCurrency)
   try {
-    mooniswapTrade =
-      route && exactAmount
-        ? new Trade(route, exactAmount, TradeType.EXACT_OUTPUT)
-        : undefined
+    mooniswapTrade = route && exactAmount ? new Trade(route, exactAmount, TradeType.EXACT_OUTPUT) : undefined
   } catch (error) {
     console.error('Failed to create mooniswapTrade trade', error)
   }

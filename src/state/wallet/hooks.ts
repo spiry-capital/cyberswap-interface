@@ -1,4 +1,4 @@
-import { Token, TokenAmount, ETHER, JSBI } from '@uniswap/sdk'
+import { Token, TokenAmount, JSBI } from '@uniswap/sdk'
 import { useMemo } from 'react'
 import ERC20_INTERFACE from '../../constants/abis/erc20'
 import { useAllTokens } from '../../hooks/Tokens'
@@ -7,6 +7,7 @@ import { useMulticallContract } from '../../hooks/useContract'
 import { isAddress } from '../../utils'
 import { useSingleContractMultipleData, useMultipleContractSingleData } from '../multicall/hooks'
 
+import { ETC as ETHER } from '../../constants'
 /**
  * Returns a map of the given addresses to their eventually consistent ETH balances.
  */
@@ -131,10 +132,7 @@ export function useTokenBalance(account?: string, token?: Token): TokenAmount | 
   return tokenBalances[token.address]
 }
 
-export function useCurrencyBalances(
-  account?: string,
-  currencies?: (Token | undefined)[]
-): (TokenAmount | undefined)[] {
+export function useCurrencyBalances(account?: string, currencies?: (Token | undefined)[]): (TokenAmount | undefined)[] {
   const tokens = useMemo(() => currencies?.filter((currency): currency is Token => currency instanceof Token) ?? [], [
     currencies
   ])

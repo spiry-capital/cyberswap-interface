@@ -1,7 +1,9 @@
-import { TokenAmount, ETHER, Percent, Route, Trade } from '@uniswap/sdk'
+import { TokenAmount, Percent, Route, Trade } from '@uniswap/sdk'
 import { DAI, USDC } from '../constants'
 import { MockV1Pair } from '../data/V1'
 import v1SwapArguments from './v1SwapArguments'
+
+import { ETC as ETHER } from '../constants'
 
 describe('v1SwapArguments', () => {
   const USDC_WETH = new MockV1Pair('1000000', new TokenAmount(USDC, '1000000'))

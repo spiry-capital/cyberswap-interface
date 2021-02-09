@@ -7,11 +7,13 @@ import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUnisw
 import MooniswapABI from '../constants/v1-mooniswap/v1_mooniswap_exchange.json'
 import MooniswapFactoryABI from '../constants/v1-mooniswap/v1_mooniswap_factory.json'
 import { ROUTER_ADDRESS } from '../constants'
-import { ChainId, JSBI, Percent, Token, TokenAmount, ETHER } from '@uniswap/sdk'
+import { ChainId, JSBI, Percent, Token, TokenAmount } from '@uniswap/sdk'
 import { TokenAddressMap } from '../state/lists/hooks'
 import { V1_MOONISWAP_FACTORY_ADDRESSES } from '../constants/v1-mooniswap'
 import { ONE_SPLIT_ABI, ONE_SPLIT_ADDRESSES } from '../constants/one-split'
 import { MIGRATOR_ABI, MIGRATOR_ADDRESS } from '../constants/abis/migrator'
+
+import { ETC as ETHER } from '../constants'
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {

@@ -1,5 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { ETHER, Token, TokenAmount, ZERO_ADDRESS } from '@uniswap/sdk'
+import { Token, TokenAmount, ZERO_ADDRESS } from '@uniswap/sdk'
 import React, { useCallback, useContext, useState } from 'react'
 import { Plus } from 'react-feather'
 import ReactGA from 'react-ga'
@@ -37,6 +37,7 @@ import { Dots, Wrapper } from '../Pool/styleds'
 import { ConfirmAddModalBottom } from './ConfirmAddModalBottom'
 import { currencyId } from '../../utils/currencyId'
 import { PoolPriceBar } from './PoolPriceBar'
+import { ETC as ETHER } from '../../constants'
 
 export default function AddLiquidity({
   match: {
@@ -121,9 +122,7 @@ export default function AddLiquidity({
     const mooniswapFactory = getMooniswapFactoryContract(chainId, library, account)
     const estimate = mooniswapFactory.estimateGas.deploy
     const method = mooniswapFactory.deploy
-    const args = [
-      currencyA.address, currencyB.address
-    ]
+    const args = [currencyA.address, currencyB.address]
 
     setAttemptingTxn(true)
 
@@ -135,11 +134,7 @@ export default function AddLiquidity({
           setAttemptingTxn(false)
 
           addTransaction(response, {
-            summary:
-              'Create Pool ' +
-              currencyA.symbol +
-              ' ' +
-              currencyB.symbol
+            summary: 'Create Pool ' + currencyA.symbol + ' ' + currencyB.symbol
           })
 
           setTxHash(response.hash)
@@ -177,10 +172,12 @@ export default function AddLiquidity({
 
     const estimate = mooniswap.estimateGas.deposit
     const method = mooniswap.deposit
-    const amounts = pair.token0.equals(parsedAmountA.token) ? [parsedAmountA, parsedAmountB] : [parsedAmountB, parsedAmountA]
+    const amounts = pair.token0.equals(parsedAmountA.token)
+      ? [parsedAmountA, parsedAmountB]
+      : [parsedAmountB, parsedAmountA]
     const args = [
-      amounts.map((x) => x.raw.toString()),
-      amounts.map((x) => calculateSlippageAmount(x, allowedSlippage)[0].toString())
+      amounts.map(x => x.raw.toString()),
+      amounts.map(x => calculateSlippageAmount(x, allowedSlippage)[0].toString())
     ]
 
     if (currencyA === ETHER || currencyB === ETHER) {
@@ -264,7 +261,7 @@ export default function AddLiquidity({
         </Row>
         <TYPE.italic fontSize={12} textAlign="left" padding={'8px 0 0 0 '}>
           {`Output is estimated. If the price changes by more than ${allowedSlippage /
-          100}% your transaction will revert.`}
+            100}% your transaction will revert.`}
         </TYPE.italic>
       </AutoColumn>
     )
@@ -287,9 +284,9 @@ export default function AddLiquidity({
     currencies[Field.CURRENCY_A]?.symbol
   } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)} ${currencies[Field.CURRENCY_B]?.symbol}`
 
-  const pendingTextForCreation = `Creating ${
-    currencies[Field.CURRENCY_A]?.symbol
-  }/${currencies[Field.CURRENCY_B]?.symbol} pool`
+  const pendingTextForCreation = `Creating ${currencies[Field.CURRENCY_A]?.symbol}/${
+    currencies[Field.CURRENCY_B]?.symbol
+  } pool`
 
   const handleCurrencyASelect = useCallback(
     (currencyA: Token) => {
@@ -342,7 +339,7 @@ export default function AddLiquidity({
             title={noLiquidity ? 'You are creating a pool' : 'You will receive'}
           />
           <AutoColumn gap="20px">
-            {noLiquidity && (pairState !== PairState.NOT_EXISTS) && (
+            {noLiquidity && pairState !== PairState.NOT_EXISTS && (
               <ColumnCenter>
                 <BlueCard>
                   <AutoColumn gap="10px">
@@ -414,40 +411,42 @@ export default function AddLiquidity({
                   approvalA === ApprovalState.PENDING ||
                   approvalB === ApprovalState.NOT_APPROVED ||
                   approvalB === ApprovalState.PENDING) &&
-                isValid && (
-                  <RowBetween>
-                    {approvalA !== ApprovalState.APPROVED && (
-                      <ButtonPrimary
-                        onClick={approveACallback}
-                        disabled={approvalA === ApprovalState.PENDING}
-                        width={approvalB !== ApprovalState.APPROVED ? '48%' : '100%'}
-                      >
-                        {approvalA === ApprovalState.PENDING ? (
-                          <Dots>Approving {currencies[Field.CURRENCY_A]?.symbol}</Dots>
-                        ) : (
-                          'Approve ' + currencies[Field.CURRENCY_A]?.symbol
-                        )}
-                      </ButtonPrimary>
-                    )}
-                    {approvalB !== ApprovalState.APPROVED && (
-                      <ButtonPrimary
-                        onClick={approveBCallback}
-                        disabled={approvalB === ApprovalState.PENDING}
-                        width={approvalA !== ApprovalState.APPROVED ? '48%' : '100%'}
-                      >
-                        {approvalB === ApprovalState.PENDING ? (
-                          <Dots>Approving {currencies[Field.CURRENCY_B]?.symbol}</Dots>
-                        ) : (
-                          'Approve ' + currencies[Field.CURRENCY_B]?.symbol
-                        )}
-                      </ButtonPrimary>
-                    )}
-                  </RowBetween>
-                )}
+                  isValid && (
+                    <RowBetween>
+                      {approvalA !== ApprovalState.APPROVED && (
+                        <ButtonPrimary
+                          onClick={approveACallback}
+                          disabled={approvalA === ApprovalState.PENDING}
+                          width={approvalB !== ApprovalState.APPROVED ? '48%' : '100%'}
+                        >
+                          {approvalA === ApprovalState.PENDING ? (
+                            <Dots>Approving {currencies[Field.CURRENCY_A]?.symbol}</Dots>
+                          ) : (
+                            'Approve ' + currencies[Field.CURRENCY_A]?.symbol
+                          )}
+                        </ButtonPrimary>
+                      )}
+                      {approvalB !== ApprovalState.APPROVED && (
+                        <ButtonPrimary
+                          onClick={approveBCallback}
+                          disabled={approvalB === ApprovalState.PENDING}
+                          width={approvalA !== ApprovalState.APPROVED ? '48%' : '100%'}
+                        >
+                          {approvalB === ApprovalState.PENDING ? (
+                            <Dots>Approving {currencies[Field.CURRENCY_B]?.symbol}</Dots>
+                          ) : (
+                            'Approve ' + currencies[Field.CURRENCY_B]?.symbol
+                          )}
+                        </ButtonPrimary>
+                      )}
+                    </RowBetween>
+                  )}
 
                 {pairState === PairState.NOT_EXISTS ? (
                   <ButtonError
-                    onClick={() => {onPoolCreate()}}
+                    onClick={() => {
+                      onPoolCreate()
+                    }}
                     disabled={false}
                     error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
                   >
@@ -477,7 +476,7 @@ export default function AddLiquidity({
       {pair && !noLiquidity && pairState !== PairState.INVALID ? (
         <AutoColumn style={{ minWidth: '20rem', marginTop: '1rem' }}>
           {/*<MinimalPositionCard showUnwrapped={oneCurrencyIsWETH} pair={pair} />*/}
-          <MinimalPositionCard showUnwrapped={false} pair={pair}/>
+          <MinimalPositionCard showUnwrapped={false} pair={pair} />
         </AutoColumn>
       ) : null}
     </>
