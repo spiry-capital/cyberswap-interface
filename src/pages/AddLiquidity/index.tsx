@@ -86,7 +86,7 @@ export default function AddLiquidity({
   // get formatted amounts
   const formattedAmounts = {
     [independentField]: typedValue,
-    [dependentField]: noLiquidity ? otherTypedValue : parsedAmounts[dependentField]?.toSignificant(6) ?? ''
+    [dependentField]: noLiquidity ? otherTypedValue : parsedAmounts[dependentField]?.toSignificant(6)
   }
 
   // get the max amounts user can add

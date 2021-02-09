@@ -38,7 +38,7 @@ export function useDerivedMintInfo(currencyA: Token | undefined, currencyB: Toke
 
   const dependentField = independentField === Field.CURRENCY_A ? Field.CURRENCY_B : Field.CURRENCY_A
 
-  const isFirstCurrencyA = currencyA && currencyB && currencyA.sortsBefore(currencyB);
+  const isFirstCurrencyA = currencyA && currencyB && currencyA.sortsBefore(currencyB)
 
   // tokens
   const currencies: { [field in Field]?: Token } = useMemo(
