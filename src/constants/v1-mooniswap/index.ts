@@ -3,7 +3,11 @@ import { ChainId } from '@uniswap/sdk'
 import V1_MOONISWAP_EXCHANGE_ABI from './v1_mooniswap_exchange.json'
 import V1_MOONISWAP_FACTORY_ABI from './v1_mooniswap_factory.json'
 
-const V1_MOONISWAP_FACTORY_ADDRESSES: { [chainId in ChainId]: string } = {
+interface INetworks {
+  [key: number]: string
+}
+
+const V1_MOONISWAP_FACTORY_ADDRESSES: INetworks = {
   [ChainId.MAINNET]: '0x71CD6666064C3A1354a3B4dca5fA1E2D3ee7D303',
   [ChainId.ROPSTEN]: '',
   [ChainId.RINKEBY]: '',
@@ -12,7 +16,7 @@ const V1_MOONISWAP_FACTORY_ADDRESSES: { [chainId in ChainId]: string } = {
   61: '0x6ED8CD17EE5453E17eb731a6B2004aF53eA1f26a'
 }
 
-const V1_MOONISWAP_HELPER_ADDRESSES: { [chainId in ChainId]: string } = {
+const V1_MOONISWAP_HELPER_ADDRESSES: INetworks = {
   [ChainId.MAINNET]: '0xe5c8e363de97840d5996e1e8db8b5facda0f1e21',
   [ChainId.ROPSTEN]: '',
   [ChainId.RINKEBY]: '',

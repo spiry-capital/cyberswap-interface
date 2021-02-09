@@ -14,7 +14,11 @@ const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 const ETH_ADDRESS = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
 const bn1e18 = JSBI.BigInt('1000000000000000000')
 
-const ONE_SPLIT_ADDRESSES: { [chainId in ChainId]: string } = {
+interface INetworks {
+  [key: number]: string
+}
+
+const ONE_SPLIT_ADDRESSES: INetworks = {
   [ChainId.MAINNET]: '0x50FDA034C0Ce7a8f7EFDAebDA7Aa7cA21CC1267e',
   [ChainId.ROPSTEN]: '',
   [ChainId.RINKEBY]: '',
