@@ -14,11 +14,10 @@ const ReferralLinkBox = styled.div`
 `
 
 function getRefferalLink(currentUserAddress: string): string {
-  return `https://mooniswap.exchange/#/swap?r=${currentUserAddress}`
+  return `https://cyberswap.net/#/swap?r=${currentUserAddress}`
 }
 
 export default function ReferralLink() {
-
   const theme = useContext(ThemeContext)
   const { account } = useActiveWeb3React()
 
