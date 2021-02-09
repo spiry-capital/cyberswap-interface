@@ -27,7 +27,8 @@ const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
   3: 'ropsten.',
   4: 'rinkeby.',
   5: 'goerli.',
-  42: 'kovan.'
+  42: 'kovan.',
+  61: 'etc.'
 }
 
 export function getEtherscanLink(chainId: ChainId, data: string, type: 'transaction' | 'token' | 'address'): string {
@@ -49,11 +50,7 @@ export function getEtherscanLink(chainId: ChainId, data: string, type: 'transact
 
 export function isUseOneSplitContract(distribution: BigNumber[] | undefined): boolean {
   return Boolean(
-    distribution &&
-    (
-      distribution?.filter((x: BigNumber) => x && !x.isZero())?.length > 1 ||
-      distribution[12].isZero()
-    )
+    distribution && (distribution?.filter((x: BigNumber) => x && !x.isZero())?.length > 1 || distribution[12].isZero())
   )
 }
 
@@ -124,7 +121,7 @@ export function getMooniswapContract(_: number, library: Web3Provider, pairAddre
   return getContract(pairAddress, MooniswapABI, library, account)
 }
 
-export function getMooniswapFactoryContract( chainId: ChainId, library: Web3Provider, account?: string) {
+export function getMooniswapFactoryContract(chainId: ChainId, library: Web3Provider, account?: string) {
   return getContract(V1_MOONISWAP_FACTORY_ADDRESSES[chainId], MooniswapFactoryABI, library, account)
 }
 

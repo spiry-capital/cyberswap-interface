@@ -117,8 +117,8 @@ const BalanceText = styled(Text)`
 const RowBetweenStyled = styled(RowBetween)`
   padding: 1rem 1rem 0 1rem;
   align-items: flex-start;
-  
-   ${({ theme }) => theme.mediaWidth.upToSmall`
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
       padding: 1rem 1rem 0.5rem 1rem;
   `};
 `
@@ -128,7 +128,8 @@ const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
   [ChainId.RINKEBY]: 'Rinkeby',
   [ChainId.ROPSTEN]: 'Ropsten',
   [ChainId.GÖRLI]: 'Görli',
-  [ChainId.KOVAN]: 'Kovan'
+  [ChainId.KOVAN]: 'Kovan',
+  [61]: 'ETC Mainnet'
 }
 
 export default function Header() {
@@ -142,9 +143,7 @@ export default function Header() {
       <RowBetweenStyled>
         <HeaderElement>
           <Title href=".">
-            <UniIcon>
-              {/*<img src={isDark ? LogoDark : Logo} alt="logo" />*/}
-            </UniIcon>
+            <UniIcon>{/*<img src={isDark ? LogoDark : Logo} alt="logo" />*/}</UniIcon>
             <TitleText>
               {/*<img style={{ marginLeft: '4px', marginTop: '4px' }} src={isDark ? WordmarkDark : Wordmark} alt="logo" width="160px"/>*/}
             </TitleText>
@@ -168,7 +167,6 @@ export default function Header() {
             {/*<VersionSwitch />*/}
             <Settings />
             <Menu />
-
           </HeaderElementWrap>
         </HeaderControls>
       </RowBetweenStyled>
