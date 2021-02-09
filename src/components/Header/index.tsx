@@ -123,7 +123,11 @@ const RowBetweenStyled = styled(RowBetween)`
   `};
 `
 
-const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
+interface INetworks {
+  [key: number]: string
+}
+
+const NETWORK_LABELS: INetworks = {
   [ChainId.MAINNET]: null,
   [ChainId.RINKEBY]: 'Rinkeby',
   [ChainId.ROPSTEN]: 'Ropsten',
