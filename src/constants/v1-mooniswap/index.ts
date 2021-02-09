@@ -8,7 +8,8 @@ const V1_MOONISWAP_FACTORY_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.ROPSTEN]: '',
   [ChainId.RINKEBY]: '',
   [ChainId.GÖRLI]: '',
-  [ChainId.KOVAN]: ''
+  [ChainId.KOVAN]: '',
+  61: '0x6ED8CD17EE5453E17eb731a6B2004aF53eA1f26a'
 }
 
 const V1_MOONISWAP_HELPER_ADDRESSES: { [chainId in ChainId]: string } = {
@@ -16,7 +17,8 @@ const V1_MOONISWAP_HELPER_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.ROPSTEN]: '',
   [ChainId.RINKEBY]: '',
   [ChainId.GÖRLI]: '',
-  [ChainId.KOVAN]: ''
+  [ChainId.KOVAN]: '',
+  61: '0xe5c8e363de97840d5996e1e8db8b5facda0f1e21'
 }
 
 const V1_FACTORY_INTERFACE = new Interface(V1_MOONISWAP_FACTORY_ABI)

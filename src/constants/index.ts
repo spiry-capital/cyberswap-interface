@@ -14,32 +14,44 @@ export const USDC = new Token(ChainId.MAINNET, '0xA0b86991c6218b36c1d19D4a2e9Eb0
 export const USDT = new Token(ChainId.MAINNET, '0xdAC17F958D2ee523a2206206994597C13D831ec7', 6, 'USDT', 'Tether USD')
 export const COMP = new Token(ChainId.MAINNET, '0xc00e94Cb662C3520282E6f5717214004A7f26888', 18, 'COMP', 'Compound')
 export const MKR = new Token(ChainId.MAINNET, '0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2', 18, 'MKR', 'Maker')
-export const CHI = new Token(ChainId.MAINNET, '0x0000000000004946c0e9F43F4Dee607b0eF1fA1c', 0, 'CHI', 'Chi Gastoken by 1inch')
+export const CHI = new Token(
+  ChainId.MAINNET,
+  '0x0000000000004946c0e9F43F4Dee607b0eF1fA1c',
+  0,
+  'CHI',
+  'Chi Gastoken by 1inch'
+)
+
+export const DOGECT = new Token(61, '0xff8596169865c7cc1458b1c0eccafd4092c7f10f', 8, 'DOGECT', 'Doge Classic Token')
 
 const ETH_ONLY: ChainTokenList = {
   [ChainId.MAINNET]: [ETHER],
   [ChainId.ROPSTEN]: [ETHER],
   [ChainId.RINKEBY]: [ETHER],
   [ChainId.GÖRLI]: [ETHER],
-  [ChainId.KOVAN]: [ETHER]
+  [ChainId.KOVAN]: [ETHER],
+  61: [ETHER]
 }
 
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...ETH_ONLY,
-  [ChainId.MAINNET]: [DAI, USDC, USDT, COMP, MKR, CHI]
+  [ChainId.MAINNET]: [DAI, USDC, USDT, COMP, MKR, CHI],
+  61: [DOGECT]
 }
 
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES: ChainTokenList = {
   ...ETH_ONLY,
-  [ChainId.MAINNET]: [DAI, USDC, USDT, CHI]
+  [ChainId.MAINNET]: [DAI, USDC, USDT, CHI],
+  61: [DOGECT]
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   ...ETH_ONLY,
-  [ChainId.MAINNET]: [ETHER, DAI, USDC, USDT, CHI]
+  [ChainId.MAINNET]: [ETHER, DAI, USDC, USDT, CHI],
+  61: [DOGECT]
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
@@ -156,7 +168,6 @@ export const MIN_ETH: JSBI = JSBI.multiply(
 export const BETTER_TRADE_LINK_THRESHOLD = new Percent(JSBI.BigInt(75), JSBI.BigInt(10000))
 
 // the Uniswap Default token list lives here
-export const DEFAULT_TOKEN_LIST_URL =
-  'https://gateway.ipfs.io/ipfs/QmSX3bNTfQBnN4xCqJdMLsgJeecr1BwGgusxPvc7Qg1mqS'
+export const DEFAULT_TOKEN_LIST_URL = 'https://gateway.ipfs.io/ipfs/QmSX3bNTfQBnN4xCqJdMLsgJeecr1BwGgusxPvc7Qg1mqS'
 
 export const REFERRAL_ADDRESS_STORAGE_KEY = 'referral-address'

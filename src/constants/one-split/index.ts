@@ -12,14 +12,15 @@ const FLAG_ENABLE_REFERRAL_GAS_SPONSORSHIP = JSBI.BigInt(0x80000000000000)
 
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 const ETH_ADDRESS = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
-const bn1e18 = JSBI.BigInt("1000000000000000000")
+const bn1e18 = JSBI.BigInt('1000000000000000000')
 
 const ONE_SPLIT_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: '0x50FDA034C0Ce7a8f7EFDAebDA7Aa7cA21CC1267e',
   [ChainId.ROPSTEN]: '',
   [ChainId.RINKEBY]: '',
   [ChainId.GÖRLI]: '',
-  [ChainId.KOVAN]: ''
+  [ChainId.KOVAN]: '',
+  61: '0x363945b6aFd60ddf9E431a605100eDc8fb1edA2e'
 }
 
 const ONE_SPLIT_ABI_INTERFACE = new Interface(ONE_SPLIT_ABI)
