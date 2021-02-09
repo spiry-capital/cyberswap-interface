@@ -24,7 +24,11 @@ export const CHI = new Token(
 
 export const DOGECT = new Token(61, '0xff8596169865c7cc1458b1c0eccafd4092c7f10f', 8, 'DOGECT', 'Doge Classic Token')
 
-const ETH_ONLY: ChainTokenList = {
+interface INetworks {
+  [key: number]: any
+}
+
+const ETH_ONLY: INetworks = {
   [ChainId.MAINNET]: [ETHER],
   [ChainId.ROPSTEN]: [ETHER],
   [ChainId.RINKEBY]: [ETHER],
@@ -34,21 +38,21 @@ const ETH_ONLY: ChainTokenList = {
 }
 
 // used to construct intermediary pairs for trading
-export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
+export const BASES_TO_CHECK_TRADES_AGAINST: INetworks = {
   ...ETH_ONLY,
   [ChainId.MAINNET]: [DAI, USDC, USDT, COMP, MKR, CHI],
   61: [DOGECT]
 }
 
 // used for display in the default list when adding liquidity
-export const SUGGESTED_BASES: ChainTokenList = {
+export const SUGGESTED_BASES: INetworks = {
   ...ETH_ONLY,
   [ChainId.MAINNET]: [DAI, USDC, USDT, CHI],
   61: [DOGECT]
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
-export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
+export const BASES_TO_TRACK_LIQUIDITY_FOR: INetworks = {
   ...ETH_ONLY,
   [ChainId.MAINNET]: [ETHER, DAI, USDC, USDT, CHI],
   61: [DOGECT]
